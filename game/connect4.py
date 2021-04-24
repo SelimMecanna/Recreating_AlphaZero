@@ -41,6 +41,9 @@ class Connect4:
 
         return False
 
+    def play_move(self, move):
+        pass
+
 
 def consecutive_ones(string, array):
     joint_array = ''.join(str(j) for j in array)
