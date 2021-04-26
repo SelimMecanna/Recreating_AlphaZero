@@ -26,24 +26,27 @@ class Connect4:
         # Check Horizontal:
         for i in range(Connect4.BOARD_SIZE[0]):
             if consecutive_ones(winning_string, player_position[i]):
-                return True
+                return True, 1.
 
         # Check Vertical:
         for i in range(Connect4.BOARD_SIZE[1]):
             if consecutive_ones(winning_string, player_position[:, i]):
-                return True
+                return True, 1.
 
         # Check diagonal \:
         for i in range(Connect4.CONNECT - Connect4.BOARD_SIZE[0], Connect4.BOARD_SIZE[1] - Connect4.CONNECT + 1):
             if consecutive_ones(winning_string, player_position.diagonal(i)):
-                return True
+                return True, 1.
 
         # Check diagonal /:
         for i in range(Connect4.CONNECT - Connect4.BOARD_SIZE[0], Connect4.BOARD_SIZE[1] - Connect4.CONNECT + 1):
             if consecutive_ones(winning_string, np.fliplr(player_position).diagonal(i)):
-                return True
+                return True, 1.
 
-        return False
+        if all([not ele for ele in self.get_valid_actions()]):
+            return True, 0.
+
+        return False, None
 
     def play_move(self, move):
         if move not in range(0, Connect4.BOARD_SIZE[1] + 1):
@@ -64,6 +67,8 @@ class Connect4:
         while not self._current_state[1, drop_index, move]:
             drop_index -= 1
 
+        self._visited_states.append(self._current_state.copy())
+
         self._current_state[1, drop_index, move] = 0.
         self._current_state[current_player_indices[0], drop_index, move] = 1.
         self._current_state[current_player_indices[1]] = np.zeros(Connect4.BOARD_SIZE)
@@ -74,13 +79,3 @@ def consecutive_ones(string, array):
     joint_array = ''.join(str(j) for j in array)
     if string in joint_array:
         return True
-
-
-if __name__ == "__main__":
-    firstgame = Connect4()
-    print(firstgame._current_state)
-    print(firstgame.get_valid_actions())
-    firstgame._current_state[0, 0, 4:6] = 1
-    firstgame._current_state[2, 0, 2] = 1
-    print(firstgame._current_state)
-    print(firstgame.get_valid_actions())
