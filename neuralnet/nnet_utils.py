@@ -63,6 +63,3 @@ def build_model(input_shape, n_actions):
 
 
     
-
-model = build_model((5,6,7), 7)
-print(model.summary())
