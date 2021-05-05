@@ -8,9 +8,8 @@ from mcts.tree import TreeNode
 # mcts_game.current_state = tree_node.state.copy()
 
 def simulate_mcts(tree_node, game, model):
-    game_status, return_value = game.is_terminated()
-    if game_status:
-        return -return_value
+    if tree_node.is_terminal:
+        return -tree_node.state_value
 
     if not tree_node.children:
         if tree_node.parent:
@@ -59,9 +58,21 @@ def simulate_mcts(tree_node, game, model):
 
 if __name__ == '__main__':
     game1 = Connect4()
+    game1.play_move(3)
+    game1.play_move(3)
+    game1.play_move(2)
+    game1.play_move(0)
+    game1.play_move(4)
+    game1.play_move(0)
     node = TreeNode(game1, 111)
-    for _ in range(100):
+    for _ in range(1000):
         simulate_mcts(node, game1, 111)
         game1 = Connect4()
+        game1.play_move(3)
+        game1.play_move(3)
+        game1.play_move(2)
+        game1.play_move(0)
+        game1.play_move(4)
+        game1.play_move(0)
 
-
+    print("nothing")
