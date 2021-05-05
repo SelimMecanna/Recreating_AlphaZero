@@ -15,7 +15,6 @@ class TreeNode:
             self.action_values = {}
             self.passes = {}
 
-
         else:
             self.policy = {act: 1 / len(game.get_valid_actions()) for act in range(len(game.get_valid_actions()))}
             self.state_value = random.random() * 2 - 1
