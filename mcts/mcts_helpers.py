@@ -1,11 +1,7 @@
 from math import sqrt
-from game.connect4 import Connect4
 import random
 from mcts.tree import TreeNode
 
-
-# mcts_game = Connect4()
-# mcts_game.current_state = tree_node.state.copy()
 
 def simulate_mcts(tree_node, game, model):
     if tree_node.is_terminal:
@@ -54,25 +50,3 @@ def simulate_mcts(tree_node, game, model):
     tree_node.passes[picked_action] += 1
 
     return -v
-
-
-if __name__ == '__main__':
-    game1 = Connect4()
-    game1.play_move(3)
-    game1.play_move(3)
-    game1.play_move(2)
-    game1.play_move(0)
-    game1.play_move(4)
-    game1.play_move(0)
-    node = TreeNode(game1, 111)
-    for _ in range(1000):
-        simulate_mcts(node, game1, 111)
-        game1 = Connect4()
-        game1.play_move(3)
-        game1.play_move(3)
-        game1.play_move(2)
-        game1.play_move(0)
-        game1.play_move(4)
-        game1.play_move(0)
-
-    print("nothing")

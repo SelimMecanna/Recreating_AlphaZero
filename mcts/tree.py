@@ -1,9 +1,7 @@
-import random
-
 
 class TreeNode:
     def __init__(self, game, model):
-        self.state = game.current_state.copy()
+        self.state = game.current_state.copy().reshape((-1, game.STATE_DEPTH, *game.BOARD_SIZE))
         self.parent = None
         self.children = {}
         game_status, return_value = game.is_terminated()
@@ -16,8 +14,9 @@ class TreeNode:
             self.passes = {}
 
         else:
-            self.policy = {act: 1 / len(game.get_valid_actions()) for act in range(len(game.get_valid_actions()))}
-            self.state_value = random.random() * 2 - 1
+            predicted_value, predicted_policy = model.predict(self.state)
+            self.policy = {act: policy for act, policy in enumerate(predicted_policy.squeeze())}
+            self.state_value = float(predicted_value.squeeze())
             self.action_values = {act: 0 for act, val in enumerate(game.get_valid_actions()) if val}
             self.passes = self.action_values.copy()
 
